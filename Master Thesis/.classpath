@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8"/>
+	<classpathentry kind="lib" path="C:/Users/Pavan Patil/Downloads/jar_files/enumeratum_2.11-1.5.13.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Pavan Patil/Downloads/jar_files/enumeratum-macros_2.11-1.5.9.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Pavan Patil/Downloads/jar_files/logback-classic-1.2.3.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Pavan Patil/Downloads/jar_files/logback-core-1.2.3.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Pavan Patil/Downloads/jar_files/optimus_2.11-3.0.0.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Pavan Patil/Downloads/jar_files/optimus-solver-gurobi_2.11-3.0.0.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Pavan Patil/Downloads/jar_files/scala-library-2.11.12.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Pavan Patil/Downloads/jar_files/scala-logging_2.11-3.9.0.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Pavan Patil/Downloads/jar_files/scala-reflect-2.11.12.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Pavan Patil/Downloads/jar_files/scala-xml_2.11-1.0.6.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Pavan Patil/Downloads/jar_files/slf4j-api-1.7.25.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Pavan Patil/Downloads/jar_files/trove4j-3.0.3.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Pavan Patil/Downloads/jar_files (1)/jmpi-main-0.6.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Pavan Patil/Downloads/jar_files (1)/jmpi-solver-gurobi-0.6.jar"/>
+	<classpathentry kind="lib" path="C:/gurobi752/win64/lib/gurobi.jar"/>
+	<classpathentry kind="lib" path="C:/gurobi752/win64/lib/gurobi-javadoc.jar"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>
