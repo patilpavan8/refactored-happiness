@@ -3,12 +3,11 @@
 ####################################
 
 resource "azurerm_public_ip" "lb_pip" {
- # provider                = azurerm.connectivity
   location                = var.location
   resource_group_name     = var.resource_group_name
   allocation_method       = "Static"
   idle_timeout_in_minutes = 30
-  name = "lbpublicip"
+  name = "lb-public-ip"
 }
 
 ######################
@@ -16,14 +15,13 @@ resource "azurerm_public_ip" "lb_pip" {
 ######################
 
 resource "azurerm_lb" "lb_public" {
-#  provider = azurerm.connectivity
   name = "publicloadbalancer"
 
   location            = var.location
   resource_group_name = azurerm_resource_group.example.name
   sku                 = var.sku
   frontend_ip_configuration {
-    name                 = "shared-public-ip"
+    name                 = "shared-public"
     public_ip_address_id = azurerm_public_ip.lb_pip.id
   }
 
@@ -34,7 +32,6 @@ resource "azurerm_lb" "lb_public" {
 ########################
 
 resource "azurerm_lb_backend_address_pool" "lb_public" {
-#  provider        = azurerm.connectivity
   loadbalancer_id = azurerm_lb.lb_public.id
   name = "publiclbbackendpool"
 }
@@ -44,7 +41,6 @@ resource "azurerm_lb_backend_address_pool" "lb_public" {
 ########################
 
 resource "azurerm_lb_probe" "lb_public" {
- # provider        = azurerm.connectivity
   loadbalancer_id = azurerm_lb.lb_public.id
   name = "publiclbhealthprobe"
   protocol = "Tcp"
@@ -56,7 +52,6 @@ resource "azurerm_lb_probe" "lb_public" {
 ################
 
 resource "azurerm_lb_rule" "lb_public" {
- # provider        = azurerm.connectivity
   loadbalancer_id = azurerm_lb.lb_public.id
   name = "publiclbrule"
   protocol                       = "Tcp"
@@ -68,11 +63,9 @@ resource "azurerm_lb_rule" "lb_public" {
   disable_outbound_snat          = true
   load_distribution              = "SourceIPProtocol"
   idle_timeout_in_minutes        = 35
-  # enable_tcp_reset               = true
 }
 
 resource "azurerm_lb_outbound_rule" "lb_public" {
- # provider        = azurerm.connectivity
   loadbalancer_id = azurerm_lb.lb_public.id
   name = "publiclboutboundrule"
   protocol = "Tcp"
@@ -90,7 +83,7 @@ resource "azurerm_lb_outbound_rule" "lb_public" {
 ########################
 
 resource "azurerm_lb" "lbinternal" {
-  name                = "internalloadbalancer"
+  name                = "internal-loadbalancer"
   location            = var.location
   resource_group_name = azurerm_resource_group.example.name
   sku                 = var.sku
@@ -106,7 +99,6 @@ resource "azurerm_lb" "lbinternal" {
 ##########################
 
 resource "azurerm_lb_backend_address_pool" "lb_internal" {
- # provider        = azurerm.connectivity
   loadbalancer_id = azurerm_lb.lbinternal.id
   name = "internallbbackendpool"
 }
@@ -116,7 +108,6 @@ resource "azurerm_lb_backend_address_pool" "lb_internal" {
 ##########################
 
 resource "azurerm_lb_probe" "lb_internal" {
- # provider        = azurerm.connectivity
   loadbalancer_id = azurerm_lb.lbinternal.id
   name = "internallbhealthprobe"
   protocol = "Tcp"
@@ -130,7 +121,6 @@ resource "azurerm_lb_probe" "lb_internal" {
 ##################
 
 resource "azurerm_lb_rule" "lb_internal" {
- # provider        = azurerm.connectivity
   loadbalancer_id = azurerm_lb.lbinternal.id
   name = "internalloadbalancer"
   # protocol                       = "Tcp"
@@ -146,7 +136,6 @@ resource "azurerm_lb_rule" "lb_internal" {
   protocol                       = "All"
   frontend_port                  = 0
   backend_port                   = 0
-  # enable_tcp_reset               = true
 }
 
 ##############
@@ -154,7 +143,6 @@ resource "azurerm_lb_rule" "lb_internal" {
 ##############
 
 resource "azurerm_linux_virtual_machine_scale_set" "gateway_vmss" {
- # provider = azurerm.connectivity
 
   name = "router-vmss"
 
@@ -164,7 +152,7 @@ resource "azurerm_linux_virtual_machine_scale_set" "gateway_vmss" {
   instances           = var.instance_count
   admin_username      = var.username
   admin_password      = var.admin_password
-  disable_password_authentication = false # Decide where username + password authentication is configured
+  disable_password_authentication = false
   upgrade_mode        = "Manual"
   tags                       = var.tags
   encryption_at_host_enabled = true
@@ -181,7 +169,7 @@ resource "azurerm_linux_virtual_machine_scale_set" "gateway_vmss" {
   # NIC 1 — public routing interface (public LB)
   ##############################################
   network_interface {
-    name = "nic-public"
+    name = "public-nic"
     primary = true
     enable_ip_forwarding = true
 
@@ -198,12 +186,12 @@ resource "azurerm_linux_virtual_machine_scale_set" "gateway_vmss" {
   # NIC 2 — private internal routing NIC
   ######################################
   network_interface {
-    name = "nic-internal"
+    name = "internal-nic"
     primary = false
     enable_ip_forwarding = true
 
     ip_configuration {
-      name      = "nic-internal"
+      name      = "internal-nic"
       subnet_id = azurerm_subnet.router-subnet["routersubnet"].id
       load_balancer_backend_address_pool_ids = [azurerm_lb_backend_address_pool.lb_internal.id]
       primary   = true

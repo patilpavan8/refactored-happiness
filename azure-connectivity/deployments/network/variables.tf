@@ -1,34 +1,34 @@
 variable "resource_group_name" {
   type        = string
-  description = "Resource group for all resources"
-  default     = "rg-infra-1199-tf-lab"
+  description = "Resource group"
+  default     = "azure-connectivity"
 }
 
 variable "location" {
   type    = string
-  default = "Italy North"
+  default = ""
 }
 
 variable "app_vnet_name" {
-  description = "Name of the existing virtual network"
+  description = "virtual network"
   type        = string
-  default     = "vnet-pavan-app-deployed"
+  default     = "vnet-app"
 }
 
 variable "firewall_vnet_name" {
-  description = "Name of the existing virtual network"
+  description = ""
   type        = string
-  default     = "vnet-pavan-firewall"
+  default     = "vnet-firewall"
 }
 
 variable "router_vnet_name" {
-  description = "Name of the existing virtual network"
+  description = ""
   type        = string
-  default     = "vnet-pavan-router"
+  default     = "vnet-router"
 }
 
 variable "app_subnet_name" {
-  description = "Name of the subnet to attach NICs to"
+  description = ""
   type        = string
   default     = "AppSubnet"
 }
@@ -39,26 +39,16 @@ variable "username" {
 }
 
 variable "admin_password" {
-  description = "Admin password for the VMSS"
+  description = "password for the VMSS"
   type        = string
   sensitive   = true
-  default     = "testadmin"
+  default     = "password123"
 }
 
 variable "image_offer" {
   type    = string
   default = "debian-12"
 }
-
-# variable "name_fields" {
-#   type = object({
-#     client      = string
-#     environment = string
-#     region      = string
-#     info        = optional(string)
-#   })
-#   description = "Fields for construction resources names. Note that the info field gets overridden by some resources"
-# }
 
 variable "vm_size" {
   type    = string
@@ -116,20 +106,20 @@ variable "image_sku" {
 }
 
 variable "router_address_space" {
-  description = "CIDR block for the virtual network"
+  description = ""
   type        = string
-  default     = "10.2.0.0/16"
+  default     = "10.2.0.0/24"
 }
 
 variable "firewall_address_space" {
-  description = "CIDR block for the virtual network"
+  description = ""
   type        = string
-  default     = "10.1.0.0/16"
+  default     = "10.1.0.0/24"
 }
 variable "app_address_space" {
-  description = "CIDR block for the virtual network"
+  description = ""
   type        = string
-  default     = "10.3.0.0/16"
+  default     = "10.3.0.0/24"
 }
 
 variable "tags" {
@@ -143,9 +133,8 @@ variable "tags" {
 # #####################
 
 variable "router-subnets" {
-  description = "Map of subnets to create including required Azure firewall subnets."
+  description = "router subnets map"
   type = map(object({
-    # address_prefix = string
     address_space                                 = string
     service_endpoints                             = list(string)
     private_link_service_network_policies_enabled = bool
@@ -157,7 +146,7 @@ variable "router-subnets" {
 
   default = {
     routersubnet = {
-      address_space                                 = "10.2.0.0/16"
+      address_space                                 = "10.2.0.0/24"
       service_endpoints                             = []
       private_link_service_network_policies_enabled = true
       delegations                                   = {}
@@ -170,9 +159,8 @@ variable "router-subnets" {
 # #################
 
 variable "firewall-subnets" {
-  description = "Map of Azure firewall subnets configuration."
+  description = "firewall subnets map"
   type = map(object({
-    # address_prefix = string
     address_space                                 = string
     service_endpoints                             = list(string)
     private_link_service_network_policies_enabled = bool
@@ -211,9 +199,8 @@ variable "firewall-subnets" {
 # ############
 
 variable "app-subnets" {
-  description = "Map of subnets to create including required app subnets."
+  description = "app vm subnets map"
   type = map(object({
-    # address_prefix = string
     address_space                                 = string
     service_endpoints                             = list(string)
     private_link_service_network_policies_enabled = bool

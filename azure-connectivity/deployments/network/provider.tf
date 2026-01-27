@@ -3,7 +3,6 @@ terraform {
     azurerm = {
       source                = "hashicorp/azurerm"
       version               = ">= 4.16.0"
-      # configuration_aliases = [azurerm.connectivity]
     }
 
     lua = {

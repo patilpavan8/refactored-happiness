@@ -6,7 +6,7 @@ module "test_infra" {
   resource "azapi_resource_action" "encryption_at_host" {
   type = "Microsoft.Resources/subscriptions@2021-07-01"
 
-  resource_id = "/subscriptions/${module.ids.subscriptions["sub-shared-test"]}"
+  resource_id = "/subscriptions/${module.ids.subscriptions["shared-test"]}"
   action      = "/providers/Microsoft.Features/providers/Microsoft.Compute/features/EncryptionAtHost/register"
   method      = "POST"
 }

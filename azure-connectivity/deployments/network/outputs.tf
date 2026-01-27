@@ -47,7 +47,7 @@ output "location" {
 }
 
 output "vnet_router_nat_gw_id" {
-  description = "ID of the router NAT GW VNet."
+  description = "ID of the router VNet."
   value       = azurerm_virtual_network.vnet-router-nat-gw.id
 }
 
@@ -62,12 +62,12 @@ output "vnet_app_id" {
 }
 
 output "nsg_allow_all_id" {
-  description = "ID of the Network Security Group allowing all traffic."
+  description = "ID of the NSG allowing all traffic."
   value       = azurerm_network_security_group.nsg_allow_all.id
 }
 
 output "router_subnet_ids" {
-  description = "IDs of the router NAT GW subnets."
+  description = "IDs of the router subnets."
   value       = { for k, s in azurerm_subnet.router-subnet : k => s.id }
 }
 
@@ -82,6 +82,6 @@ output "app_subnet_ids" {
 }
 
 output "firewall_routes" {
-  description = "Computed firewall routes per region."
+  description = "firewall routes per region."
   value       = local.firewall_routes
 }

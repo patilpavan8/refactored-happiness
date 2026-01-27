@@ -215,7 +215,6 @@ resource "azurerm_virtual_network_peering" "vnet_firewall_peering_to_vnet_app" {
 }
 
 # VNet2 firewall subnet configuration
-# Create Subnets dynamically from variables
 resource "azurerm_subnet" "firewall-subnet" {
   for_each             = var.firewall-subnets
   name                 = "${each.key}"
@@ -234,7 +233,6 @@ resource "azurerm_route_table" "vnet-firewall-routes" {
     name = "test-fw-route"
     address_prefix         = "0.0.0.0/0"
     next_hop_type          = "VirtualAppliance"
-    # next_hop_in_ip_address = "10.2.0.11"
     next_hop_in_ip_address = azurerm_lb.lbinternal.frontend_ip_configuration[0].private_ip_address
   }
 
@@ -305,7 +303,7 @@ resource "azurerm_route_table" "vnet-app-routes" {
     name = "router-routingtable"
     address_prefix         = "0.0.0.0/0"
     next_hop_type          = "VirtualAppliance"
-    next_hop_in_ip_address = "10.1.2.4"
+    next_hop_in_ip_address = "10.1.2.4" # firewall ip addr
   }
 
   tags = var.tags

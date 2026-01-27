@@ -2,7 +2,7 @@
 set -e
 
 ########################
-# Enable IPv4 forwarding
+# enabled IPv4 forwarding
 ########################
 sysctl -w net.ipv4.ip_forward=1
 
@@ -11,7 +11,7 @@ if ! grep -q "^net.ipv4.ip_forward=1" /etc/sysctl.conf; then
 fi
 
 ###########################
-# Install required packages
+# required packages
 ###########################
 apt-get update -y
 apt-get install -y \
@@ -21,12 +21,12 @@ apt-get install -y \
   telnet
 
 ################################
-# Flush existing nftables rules
+# deleted existing nftables rules
 ################################
 nft flush ruleset
 
 ##########################
-# Create nftables ruleset
+# nftables ruleset
 ##########################
 cat << 'EOF' > /etc/nftables.conf
 #!/usr/sbin/nft -f
@@ -121,24 +121,24 @@ table ip filter {
 EOF
 
 #########################
-# Enable nftables service
+# enabled nftables service
 #########################
 systemctl enable nftables
 systemctl start nftables
 
 #####################
-# Load nftables rules
+# nftables rules
 #####################
 nft -f /etc/nftables.conf
 
 ##############################
-# Create custom routing tables
+# custom routing tables
 ##############################
 echo "2000 eth1_table" > /etc/iproute2/rt_tables
 echo "3000 eth0_table" >> /etc/iproute2/rt_tables
 
 #############################################
-# Add routing/policy rules for marked packets
+# routing/policy rules for the marked packets
 #############################################
 ip rule add fwmark 2000 lookup eth1_table priority 100
 ip rule add fwmark 3000 lookup eth0_table priority 101
